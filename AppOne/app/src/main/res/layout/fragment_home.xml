@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:textSize="32sp"
-        android:layout_below="@id/cityTv"
+        android:layout_below="@id/title"
         android:layout_marginTop="10sp"
         tools:text="Title"/>
 
