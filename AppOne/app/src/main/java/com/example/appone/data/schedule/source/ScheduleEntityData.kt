@@ -2,8 +2,9 @@ package com.example.appone.data.schedule.source
 
 import com.example.appone.domain.schedule.model.PraySchedule
 import com.example.appone.domain.schedule.model.PrayScheduleRequest
+import io.reactivex.Single
 
 interface ScheduleEntityData {
-    suspend fun getPraySchedule(prayScheduleRequest: PrayScheduleRequest): List<PraySchedule>
-    suspend fun addPraySchedules(praySchedules: List<PraySchedule>)
+    fun getPraySchedule(prayScheduleRequest: PrayScheduleRequest): Single<List<PraySchedule>>
+    fun addPraySchedules(praySchedules: List<PraySchedule>)
 }
