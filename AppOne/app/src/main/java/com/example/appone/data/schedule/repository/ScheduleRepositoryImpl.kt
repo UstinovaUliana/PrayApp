@@ -5,27 +5,28 @@ import com.example.appone.domain.schedule.model.PraySchedule
 import com.example.appone.domain.schedule.model.PrayScheduleRequest
 import com.example.appone.domain.schedule.repository.ScheduleRepository
 import com.example.appone.util.Source
-import io.reactivex.Single
+import io.reactivex.Flowable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class ScheduleRepositoryImpl @Inject constructor(
     private val scheduleFactory: ScheduleFactory
 ) : ScheduleRepository {
-    override fun getPraySchedules(prayScheduleRequest: PrayScheduleRequest): Single<List<PraySchedule>> {
-        var single = scheduleFactory.create(Source.LOCAL).getPraySchedule(prayScheduleRequest)
+    override fun getPraySchedules(prayScheduleRequest: PrayScheduleRequest): Flowable<List<PraySchedule>> =
+        syncPraySchedule(prayScheduleRequest)
+            .startWith(basePraySchedule(prayScheduleRequest))
+            .subscribeOn(Schedulers.io())
 
-        if(single.blockingGet().isEmpty()) { single=syncPraySchedule(prayScheduleRequest) }
-
-        return single
+    private fun basePraySchedule(prayScheduleRequest: PrayScheduleRequest): Flowable<List<PraySchedule>> {
+        return scheduleFactory.create(Source.LOCAL).getPraySchedule(prayScheduleRequest)
     }
 
-    private fun syncPraySchedule(prayScheduleRequest: PrayScheduleRequest): Single<List<PraySchedule>> {
+    private fun syncPraySchedule(prayScheduleRequest: PrayScheduleRequest): Flowable<List<PraySchedule>> {
+        val prayScheduleFromNetwork =
+            scheduleFactory.create(Source.NETWORK).getPraySchedule(prayScheduleRequest)
+        scheduleFactory.create(Source.LOCAL).addPraySchedules(prayScheduleFromNetwork)
 
-        return scheduleFactory.create(Source.NETWORK).getPraySchedule(prayScheduleRequest)
-            .also { prayScheduleFromNetwork ->
-                scheduleFactory.create(Source.LOCAL).addPraySchedules(prayScheduleFromNetwork.blockingGet())
-            }
-
+        return prayScheduleFromNetwork
     }
 
 }

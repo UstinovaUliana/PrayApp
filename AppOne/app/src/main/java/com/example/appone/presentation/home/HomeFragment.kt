@@ -30,14 +30,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private val homeViewModel: HomeViewModel by viewModels()
 
-    private val disposable = CompositeDisposable()
-
     override fun constructViewBinding(): ViewBinding = FragmentHomeBinding.inflate(layoutInflater)
 
     override fun init(viewBinding: ViewBinding) {
-        Log.d("mytag","HomeFragment 1")
         homeViewModel.getPraySchedule()
-        Log.d("mytag","HomeFragment 2")
         initUi()
         fetchPraySchedules()
     }
@@ -51,23 +47,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun fetchPraySchedules() {
-
-        /*
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                homeViewModel.uiState.collect { state ->
-                    when (state) {
-                        is HomeViewModel.PrayUiState.Loaded -> onLoaded(state.itemState)
-                        is HomeViewModel.PrayUiState.Error -> showError(state.message)
-                        is HomeViewModel.PrayUiState.Loading -> showLoading()
-                    }
-                }
-            }
-        }
-
-
-         */
-
         homeViewModel.uiState.observe(this.viewLifecycleOwner
         ) { state ->
             when (state) {
@@ -76,13 +55,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 is HomeViewModel.PrayUiState.Loading -> showLoading()
             }
         }
-
     }
-
-    /*
-
-
-     */
 
     private fun onLoaded(homeItemUiState: HomeItemUiState) {
         homeItemUiState.run {

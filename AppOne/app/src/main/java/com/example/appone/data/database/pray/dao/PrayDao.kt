@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.appone.data.database.pray.model.PrayEntity
+import io.reactivex.Flowable
 import io.reactivex.Single
 
 @Dao
@@ -14,5 +15,5 @@ interface PrayDao {
     fun insert(note: List<PrayEntity>)
 
     @Query("SELECT * FROM pray WHERE city = :city AND time >= :from AND time <= :to")
-    fun getPraySchedule(city: String, from: Long, to: Long): LiveData<List<PrayEntity>>
+    fun getPraySchedule(city: String, from: Long, to: Long): Flowable<List<PrayEntity>>
 }
