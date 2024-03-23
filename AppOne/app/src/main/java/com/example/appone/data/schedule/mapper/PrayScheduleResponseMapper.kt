@@ -1,15 +1,9 @@
 package com.example.appone.data.schedule.mapper
 
-import android.util.Log
-import androidx.lifecycle.LiveData
 import com.example.appone.data.schedule.model.PrayScheduleResponse
 import com.example.appone.domain.schedule.model.PraySchedule
 import com.example.appone.util.TimeUtil
 import io.reactivex.Flowable
-import io.reactivex.Observable
-import io.reactivex.Scheduler
-import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 
 object PrayScheduleResponseMapper {
     fun Flowable<PrayScheduleResponse>.toPraySchedules(): Flowable<List<PraySchedule>> {
@@ -20,13 +14,6 @@ object PrayScheduleResponseMapper {
             val format = "yyyy-M-dd hh:mm a"
             it.items?.get(0)?.let { dataItem ->
                 val dateStr = dataItem.date_for
-                praySchedules.add(
-                    PraySchedule(
-                        cityName, "Fajr", TimeUtil.getTimestamp(
-                            format, dateStr.plus(" ").plus(dataItem.fajr)
-                        )
-                    )
-                )
                 praySchedules.add(
                     PraySchedule(
                         cityName, "Fajr", TimeUtil.getTimestamp(

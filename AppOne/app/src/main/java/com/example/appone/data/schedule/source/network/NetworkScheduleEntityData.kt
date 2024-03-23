@@ -7,8 +7,6 @@ import com.example.appone.data.schedule.source.ScheduleEntityData
 import com.example.appone.domain.schedule.model.PraySchedule
 import com.example.appone.domain.schedule.model.PrayScheduleRequest
 import io.reactivex.Flowable
-import io.reactivex.Single
-import kotlinx.coroutines.flow.asFlow
 import javax.inject.Inject
 
 class NetworkScheduleEntityData @Inject constructor(
@@ -19,7 +17,6 @@ class NetworkScheduleEntityData @Inject constructor(
     }
 
     override fun addPraySchedules(praySchedules: Flowable<List<PraySchedule>>) {
-        Log.d("mytag","addPraySchedules")
         // no op
     }
 }

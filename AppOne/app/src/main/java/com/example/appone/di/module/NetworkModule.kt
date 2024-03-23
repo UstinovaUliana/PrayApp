@@ -1,8 +1,6 @@
 package com.example.appone.di.module
 
-
 import com.example.appone.BuildConfig
-import com.example.appone.data.networking.CoroutineDispatcherProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,6 +10,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -34,7 +33,4 @@ object NetworkModule {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
     }
-
-    @Provides
-    fun provideCoroutiineDispatcher() = CoroutineDispatcherProvider()
 }

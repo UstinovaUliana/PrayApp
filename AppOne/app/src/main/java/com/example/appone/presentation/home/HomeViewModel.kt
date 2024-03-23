@@ -1,16 +1,8 @@
 package com.example.appone.presentation.home
 
-/*
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
-
- */
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.appone.data.networking.CoroutineDispatcherProvider
 import com.example.appone.domain.schedule.model.PrayScheduleRequest
 import com.example.appone.domain.schedule.usecase.GetPraySchedule
 import com.example.appone.util.TimeUtil
@@ -34,7 +26,6 @@ class HomeViewModel @Inject constructor(
         disposable.add ( getPraySchedules.execute(requestParam)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                Log.d("mytag", "${it.size}")
             _uiState.value = PrayUiState.Loaded(HomeItemUiState(city,it))
             },{
                 _uiState.value = PrayUiState.Error(it.message?:"")

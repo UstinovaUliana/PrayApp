@@ -8,7 +8,6 @@ import com.example.appone.domain.schedule.model.PraySchedule
 import com.example.appone.domain.schedule.model.PrayScheduleRequest
 import com.example.appone.util.TimeUtil
 import io.reactivex.Flowable
-import io.reactivex.Single
 import javax.inject.Inject
 
 class LocalScheduleEntityData @Inject constructor(

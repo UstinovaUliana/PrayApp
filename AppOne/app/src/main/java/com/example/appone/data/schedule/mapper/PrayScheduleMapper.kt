@@ -1,10 +1,8 @@
 package com.example.appone.data.schedule.mapper
 
 import com.example.appone.data.database.pray.model.PrayEntity
-import com.example.appone.data.schedule.mapper.PrayEntityMapper.toPraySchedules
 import com.example.appone.domain.schedule.model.PraySchedule
 import io.reactivex.Flowable
-import io.reactivex.Single
 
 object PrayScheduleMapper {
 

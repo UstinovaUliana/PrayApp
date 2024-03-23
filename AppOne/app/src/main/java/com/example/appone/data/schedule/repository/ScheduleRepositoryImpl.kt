@@ -10,21 +10,25 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class ScheduleRepositoryImpl @Inject constructor(
-    private val scheduleFactory: ScheduleFactory
+    scheduleFactory: ScheduleFactory
 ) : ScheduleRepository {
+
+    private val localEntity = scheduleFactory.create(Source.LOCAL)
+    private val networkEntity = scheduleFactory.create(Source.NETWORK)
+
     override fun getPraySchedules(prayScheduleRequest: PrayScheduleRequest): Flowable<List<PraySchedule>> =
-        syncPraySchedule(prayScheduleRequest)
-            .startWith(basePraySchedule(prayScheduleRequest))
+        basePraySchedule(prayScheduleRequest)
+            .mergeWith(syncPraySchedule(prayScheduleRequest))
             .subscribeOn(Schedulers.io())
 
     private fun basePraySchedule(prayScheduleRequest: PrayScheduleRequest): Flowable<List<PraySchedule>> {
-        return scheduleFactory.create(Source.LOCAL).getPraySchedule(prayScheduleRequest)
+        return localEntity.getPraySchedule(prayScheduleRequest)
     }
 
     private fun syncPraySchedule(prayScheduleRequest: PrayScheduleRequest): Flowable<List<PraySchedule>> {
         val prayScheduleFromNetwork =
-            scheduleFactory.create(Source.NETWORK).getPraySchedule(prayScheduleRequest)
-        scheduleFactory.create(Source.LOCAL).addPraySchedules(prayScheduleFromNetwork)
+            networkEntity.getPraySchedule(prayScheduleRequest)
+        localEntity.addPraySchedules(prayScheduleFromNetwork)
 
         return prayScheduleFromNetwork
     }

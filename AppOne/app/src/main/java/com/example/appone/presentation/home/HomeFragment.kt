@@ -1,26 +1,15 @@
 package com.example.appone.presentation.home
 
-import android.util.Log
 import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewbinding.ViewBinding
 import com.example.appone.databinding.FragmentHomeBinding
 import com.example.appone.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
-/*
-import kotlinx.coroutines.launch
-
- */
 import timber.log.Timber
 import javax.inject.Inject
 import com.example.appone.presentation.home.adapter.PrayAdapter
-import io.reactivex.disposables.CompositeDisposable
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
