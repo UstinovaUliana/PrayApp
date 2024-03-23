@@ -2,14 +2,18 @@ package com.example.appone.data.schedule.mapper
 
 import com.example.appone.data.database.pray.model.PrayEntity
 import com.example.appone.domain.schedule.model.PraySchedule
+import io.reactivex.Flowable
 
 object PrayScheduleMapper {
 
-    fun List<PraySchedule>.toPrayEntities(): List<PrayEntity> {
-        val prayEntities = ArrayList<PrayEntity>()
-        forEach {
-            prayEntities.add(PrayEntity(it.id, it.city, it.name, it.time))
+    fun Flowable<List<PraySchedule>>.toPrayEntities(): Flowable<List<PrayEntity>> {
+
+        return this.map { it ->
+            val prayEntities = ArrayList<PrayEntity>()
+            it.forEach {
+                prayEntities.add(PrayEntity(it.id, it.city, it.name, it.time))
+            }
+            prayEntities
         }
-        return prayEntities
     }
 }

@@ -1,21 +1,15 @@
 package com.example.appone.presentation.home
 
 import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewbinding.ViewBinding
 import com.example.appone.databinding.FragmentHomeBinding
 import com.example.appone.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 import com.example.appone.presentation.home.adapter.PrayAdapter
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
@@ -42,15 +36,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun fetchPraySchedules() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                homeViewModel.uiState.collect { state ->
-                    when (state) {
-                        is HomeViewModel.PrayUiState.Loaded -> onLoaded(state.itemState)
-                        is HomeViewModel.PrayUiState.Error -> showError(state.message)
-                        is HomeViewModel.PrayUiState.Loading -> showLoading()
-                    }
-                }
+        homeViewModel.uiState.observe(this.viewLifecycleOwner
+        ) { state ->
+            when (state) {
+                is HomeViewModel.PrayUiState.Loaded -> onLoaded(state.itemState)
+                is HomeViewModel.PrayUiState.Error -> showError(state.message)
+                is HomeViewModel.PrayUiState.Loading -> showLoading()
             }
         }
     }
@@ -66,7 +57,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         Timber.d("showLoading")
     }
 
-    private fun showError(@StringRes stringRes:Int) {
-        Toast.makeText(requireContext(),stringRes,Toast.LENGTH_SHORT).show()
+    private fun showError(message:String) {
+        Toast.makeText(requireContext(),message,Toast.LENGTH_SHORT).show()
     }
 }
